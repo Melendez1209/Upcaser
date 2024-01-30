@@ -1,4 +1,4 @@
-package com.github.melendez1209.upcaser
+package com.melendez.upcaser
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls
