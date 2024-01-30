@@ -1,4 +1,4 @@
-package com.github.melendez1209.upcaser.listeners
+package com.melendez.upcaser.listeners
 
 import com.intellij.openapi.application.ApplicationActivationListener
 import com.intellij.openapi.diagnostic.thisLogger
