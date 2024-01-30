@@ -1,9 +1,9 @@
-package com.melendez.upcaser.services
+package com.yiminggeng.upcaser.services
 
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
-import com.melendez.upcaser.MyBundle
+import com.yiminggeng.upcaser.MyBundle
 
 @Service(Service.Level.PROJECT)
 class MyProjectService(project: Project) {
