@@ -1,4 +1,4 @@
-package com.melendez.upcaser.toolWindow
+package com.yiminggeng.upcaser.toolWindow
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
@@ -8,8 +8,8 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.content.ContentFactory
-import com.melendez.upcaser.MyBundle
-import com.melendez.upcaser.services.MyProjectService
+import com.yiminggeng.upcaser.MyBundle
+import com.yiminggeng.upcaser.services.MyProjectService
 import javax.swing.JButton
 
 
