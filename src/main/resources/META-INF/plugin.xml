@@ -4,6 +4,10 @@
     <vendor>Yiming Geng</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <description>
+        Upcaser is an idea plugin to assist developers in automatically capitalising the first letter of sentences when
+        writing technical documentation in English.
+    </description>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
