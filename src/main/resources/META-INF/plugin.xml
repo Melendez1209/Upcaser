@@ -15,6 +15,13 @@
         <toolWindow factoryClass="com.yiminggeng.upcaser.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
     </extensions>
 
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable
+                instance="com.yiminggeng.upcaser.settings.UpcaserSettings"
+                displayName="Upcaser Settings"
+                nonDefaultProject="true"/>
+    </extensions>
+
     <applicationListeners>
         <listener class="com.yiminggeng.upcaser.listeners.MyApplicationActivationListener"
                   topic="com.intellij.openapi.application.ApplicationActivationListener"/>
