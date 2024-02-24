@@ -1,4 +1,4 @@
-package com.github.melendez1209.upcaser
+package com.yiminggeng.upcaser
 
 import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.openapi.components.service
@@ -9,7 +9,7 @@ import com.intellij.util.PsiErrorElementUtil
 import com.yiminggeng.upcaser.services.MyProjectService
 
 @TestDataPath("\$CONTENT_ROOT/src/test/testData")
-class MyPluginTest : BasePlatformTestCase() {
+class UpcaserTest : BasePlatformTestCase() {
 
     fun testXMLFile() {
         val psiFile = myFixture.configureByText(XmlFileType.INSTANCE, "<foo>bar</foo>")
