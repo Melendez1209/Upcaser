@@ -2,6 +2,7 @@ package com.github.melendez1209.upcaser
 
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.DumbAware
@@ -23,7 +24,7 @@ class ToggleUpcastAction : AnAction(), DumbAware {
         } else {
             MyBundle.message("notification.disabled")
         }
-        
+
         notificationGroup.createNotification(
             MyBundle.message("notification.title"),
             message,
@@ -38,5 +39,9 @@ class ToggleUpcastAction : AnAction(), DumbAware {
         } else {
             MyBundle.message("action.enable")
         }
+    }
+
+    override fun getActionUpdateThread(): ActionUpdateThread {
+        return ActionUpdateThread.EDT
     }
 }

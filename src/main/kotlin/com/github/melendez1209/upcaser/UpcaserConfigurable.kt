@@ -3,9 +3,9 @@ package com.github.melendez1209.upcaser
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.ui.DialogPanel
-import com.intellij.ui.dsl.builder.*
+import com.intellij.ui.dsl.builder.bindSelected
+import com.intellij.ui.dsl.builder.panel
 import javax.swing.JComponent
-import javax.swing.JButton
 
 /**
  * Configurable for Upcaser plugin settings
@@ -26,7 +26,7 @@ class UpcaserConfigurable : Configurable {
                 checkBox(MyBundle.message("Settings.Enabled"))
                     .bindSelected(settings::isEnabled, settings::setEnabled)
             }
-            
+
             group(MyBundle.message("Settings.PunctuationMarks")) {
                 row {
                     checkBox(MyBundle.message("Settings.Period"))
@@ -45,7 +45,7 @@ class UpcaserConfigurable : Configurable {
                         .bindSelected(settings::isEllipsisEnabled, settings::setEllipsisEnabled)
                 }
             }
-            
+
             group(MyBundle.message("Settings.AutoSpace")) {
                 row {
                     checkBox(MyBundle.message("Settings.AutoAddSpace"))
@@ -53,11 +53,11 @@ class UpcaserConfigurable : Configurable {
                         .comment(MyBundle.message("Settings.AutoAddSpace.Description"))
                 }
             }
-            
+
             group(MyBundle.message("Settings.Shortcut")) {
                 row {
                     label(MyBundle.message("Settings.Shortcut.Label"))
-                    cell(ShortcutTextField().also { 
+                    cell(ShortcutTextField().also {
                         shortcutField = it
                         it.setShortcut(settings.toggleShortcut)
                     })
@@ -69,7 +69,7 @@ class UpcaserConfigurable : Configurable {
                     }
                 }.comment(MyBundle.message("Settings.Shortcut.Description"))
             }
-            
+
             row {
                 comment(MyBundle.message("Settings.Description"))
             }

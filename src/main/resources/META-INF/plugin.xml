@@ -14,7 +14,7 @@
         <applicationService serviceImplementation="com.github.melendez1209.upcaser.UpcaserSettings"/>
         <applicationConfigurable 
             instance="com.github.melendez1209.upcaser.UpcaserConfigurable"
-            id="upcaser.settings" 
+            id="upcaser.settings"
             displayName="%Settings.Title"/>
         <notificationGroup id="Upcaser" displayType="BALLOON" bundle="messages.MyBundle"
                            key="notification.group.upcaser"/>
@@ -22,9 +22,8 @@
 
     <actions>
         <action id="upcaser.toggle" 
-                class="com.github.melendez1209.upcaser.ToggleUpcastAction" 
-                text="%Action.Toggle"
-                description="%action.toggle.description">
+                class="com.github.melendez1209.upcaser.ToggleUpcastAction"
+        >
             <add-to-group group-id="ToolsMenu" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift X"/>
         </action>

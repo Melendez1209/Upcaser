@@ -24,20 +24,21 @@ class AutoCapitalizeHandler : TypedHandlerDelegate() {
         if (settings.isAutoAddSpaceEnabled) {
             val shouldAddSpace = when (c) {
                 '.' -> {
-                    settings.isPeriodEnabled && 
-                    // Check if this completes an ellipsis
-                    if (settings.isEllipsisEnabled && caretOffset >= 3) {
-                        val textBefore = document.text.substring(maxOf(0, caretOffset - 3), caretOffset)
-                        !textBefore.endsWith("..")
-                    } else {
-                        settings.isPeriodEnabled
-                    }
+                    settings.isPeriodEnabled &&
+                            // Check if this completes an ellipsis
+                            if (settings.isEllipsisEnabled && caretOffset >= 3) {
+                                val textBefore = document.text.substring(maxOf(0, caretOffset - 3), caretOffset)
+                                !textBefore.endsWith("..")
+                            } else {
+                                settings.isPeriodEnabled
+                            }
                 }
+
                 '!' -> settings.isExclamationEnabled
                 '?' -> settings.isQuestionEnabled
                 else -> false
             }
-            
+
             // Special handling for ellipsis completion
             if (c == '.' && settings.isEllipsisEnabled && caretOffset >= 2) {
                 val textBefore = document.text.substring(maxOf(0, caretOffset - 2), caretOffset)
@@ -48,14 +49,14 @@ class AutoCapitalizeHandler : TypedHandlerDelegate() {
                     } else {
                         ""
                     }
-                    
+
                     if (textAfterCaret.isEmpty() || !textAfterCaret.first().isWhitespace()) {
                         document.insertString(caretOffset, " ")
                     }
                     return Result.CONTINUE
                 }
             }
-            
+
             if (shouldAddSpace) {
                 // Check if there's already a space or end of document after the punctuation
                 val textAfterCaret = if (caretOffset < document.textLength) {
@@ -63,7 +64,7 @@ class AutoCapitalizeHandler : TypedHandlerDelegate() {
                 } else {
                     ""
                 }
-                
+
                 if (textAfterCaret.isEmpty() || !textAfterCaret.first().isWhitespace()) {
                     document.insertString(caretOffset, " ")
                 }
@@ -91,7 +92,6 @@ class AutoCapitalizeHandler : TypedHandlerDelegate() {
 
         return Result.CONTINUE
     }
-
 
 
     /**
@@ -132,4 +132,4 @@ class AutoCapitalizeHandler : TypedHandlerDelegate() {
 
         return false
     }
-} 
+}
