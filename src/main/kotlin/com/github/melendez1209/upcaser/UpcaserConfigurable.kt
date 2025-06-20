@@ -5,6 +5,7 @@ import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.ui.dsl.builder.*
 import javax.swing.JComponent
+import javax.swing.JButton
 
 /**
  * Configurable for Upcaser plugin settings
@@ -13,6 +14,7 @@ class UpcaserConfigurable : Configurable {
 
     private var panel: DialogPanel? = null
     private val settings = UpcaserSettings.getInstance()
+    private var shortcutField: ShortcutTextField? = null
 
     override fun getDisplayName(): String {
         return MyBundle.message("Settings.Title")
@@ -52,6 +54,22 @@ class UpcaserConfigurable : Configurable {
                 }
             }
             
+            group(MyBundle.message("Settings.Shortcut")) {
+                row {
+                    label(MyBundle.message("Settings.Shortcut.Label"))
+                    cell(ShortcutTextField().also { 
+                        shortcutField = it
+                        it.setShortcut(settings.toggleShortcut)
+                    })
+                    button(MyBundle.message("Settings.Shortcut.Reset")) {
+                        shortcutField?.setShortcut("ctrl shift X")
+                    }
+                    button(MyBundle.message("Settings.Shortcut.Clear")) {
+                        shortcutField?.clearShortcut()
+                    }
+                }.comment(MyBundle.message("Settings.Shortcut.Description"))
+            }
+            
             row {
                 comment(MyBundle.message("Settings.Description"))
             }
@@ -60,19 +78,38 @@ class UpcaserConfigurable : Configurable {
     }
 
     override fun isModified(): Boolean {
-        return panel?.isModified() ?: false
+        val panelModified = panel?.isModified() ?: false
+        val shortcutModified = shortcutField?.getShortcut() != settings.toggleShortcut
+        return panelModified || shortcutModified
     }
 
     @Throws(ConfigurationException::class)
     override fun apply() {
         panel?.apply()
+        shortcutField?.getShortcut()?.let { newShortcut ->
+            if (newShortcut != settings.toggleShortcut) {
+                settings.setToggleShortcut(newShortcut)
+                updateShortcutInKeymap(newShortcut)
+            }
+        }
     }
 
     override fun reset() {
         panel?.reset()
+        shortcutField?.setShortcut(settings.toggleShortcut)
+    }
+
+    private fun updateShortcutInKeymap(shortcut: String) {
+        try {
+            ShortcutManager.updateShortcut(shortcut)
+        } catch (e: Exception) {
+            // Handle error updating keymap
+            println("Failed to update shortcut in keymap: ${e.message}")
+        }
     }
 
     override fun disposeUIResources() {
         panel = null
+        shortcutField = null
     }
 }

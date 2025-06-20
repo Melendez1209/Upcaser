@@ -15,6 +15,7 @@ class AutoCapitalizeHandlerTest : BasePlatformTestCase() {
         settings.setQuestionEnabled(true)
         settings.setEllipsisEnabled(true)
         settings.setAutoAddSpaceEnabled(true)
+        settings.setToggleShortcut("ctrl shift X")
     }
 
     fun testAutoCapitalizeAfterPeriod() {
@@ -166,5 +167,20 @@ class AutoCapitalizeHandlerTest : BasePlatformTestCase() {
         
         // Should add space after ellipsis and capitalize the 'h'
         assertEquals("Wait... Hello", myFixture.editor.document.text)
+    }
+
+    fun testShortcutSettings() {
+        val settings = UpcaserSettings.getInstance()
+        
+        // Test default shortcut
+        assertEquals("ctrl shift X", settings.toggleShortcut)
+        
+        // Test setting custom shortcut
+        settings.setToggleShortcut("ctrl alt Z")
+        assertEquals("ctrl alt Z", settings.toggleShortcut)
+        
+        // Test reset to default
+        settings.setToggleShortcut("ctrl shift X")
+        assertEquals("ctrl shift X", settings.toggleShortcut)
     }
 } 

@@ -19,7 +19,8 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
         var enabledForExclamation: Boolean = true,
         var enabledForQuestion: Boolean = true,
         var enabledForEllipsis: Boolean = true,
-        var autoAddSpace: Boolean = true
+        var autoAddSpace: Boolean = true,
+        var toggleShortcut: String = "ctrl shift X"
     )
 
     private var state = State()
@@ -43,6 +44,7 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
     val isQuestionEnabled: Boolean get() = state.enabledForQuestion
     val isEllipsisEnabled: Boolean get() = state.enabledForEllipsis
     val isAutoAddSpaceEnabled: Boolean get() = state.autoAddSpace
+    val toggleShortcut: String get() = state.toggleShortcut
 
     // Setters for configuration
     fun setEnabled(enabled: Boolean) {
@@ -67,5 +69,9 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
 
     fun setAutoAddSpaceEnabled(enabled: Boolean) {
         state.autoAddSpace = enabled
+    }
+
+    fun setToggleShortcut(shortcut: String) {
+        state.toggleShortcut = shortcut
     }
 } 
