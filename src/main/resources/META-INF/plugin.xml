@@ -1,15 +1,32 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.melendez1209.upcaser</id>
-    <name>Upcaser</name>
+    <name>%Upcaser.Name</name>
     <vendor>melendez1209</vendor>
+    <description>%Upcaser.Description</description>
 
     <depends>com.intellij.modules.platform</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.melendez1209.upcaser.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="com.github.melendez1209.upcaser.startup.MyProjectActivity" />
+        <typedHandler implementation="com.github.melendez1209.upcaser.AutoCapitalizeHandler"/>
+        <applicationService serviceImplementation="com.github.melendez1209.upcaser.UpcaserSettings"/>
+        <applicationConfigurable 
+            instance="com.github.melendez1209.upcaser.UpcaserConfigurable"
+            id="upcaser.settings" 
+            displayName="%Settings.Title"/>
+        <notificationGroup id="Upcaser" displayType="BALLOON" bundle="messages.MyBundle"
+                           key="notification.group.upcaser"/>
     </extensions>
+
+    <actions>
+        <action id="upcaser.toggle" 
+                class="com.github.melendez1209.upcaser.ToggleUpcastAction" 
+                text="%Action.Toggle"
+                description="%action.toggle.description">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift X"/>
+        </action>
+    </actions>
 </idea-plugin>

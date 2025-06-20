@@ -3,3 +3,5 @@
 .intellijPlatform
 .qodana
 build
+/.kotlin/sessions/kotlin-compiler-14303472827108548457.salive
+/USAGE.md
