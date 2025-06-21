@@ -5,3 +5,9 @@
 build
 /.kotlin/sessions/kotlin-compiler-14303472827108548457.salive
 /USAGE.md
+
+# Plugin signing certificates and keys - DO NOT COMMIT
+certs/
+*.pem
+*.p12
+*.jks
