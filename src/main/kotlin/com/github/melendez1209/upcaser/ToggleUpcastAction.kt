@@ -1,7 +1,6 @@
 package com.github.melendez1209.upcaser
 
-import com.intellij.notification.NotificationGroupManager
-import com.intellij.notification.NotificationType
+
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -17,19 +16,11 @@ class ToggleUpcastAction : AnAction(), DumbAware {
         val newState = !settings.isEnabled
         settings.setEnabled(newState)
 
-        // Show notification
-        val notificationGroup = NotificationGroupManager.getInstance().getNotificationGroup("Upcaser")
-        val message = if (newState) {
-            MyBundle.message("notification.enabled")
-        } else {
-            MyBundle.message("notification.disabled")
+        // Update status bar widget if available
+        e.project?.let { project ->
+            val statusBar = com.intellij.openapi.wm.WindowManager.getInstance().getStatusBar(project)
+            statusBar?.updateWidget(UpcaserStatusBarWidget.ID)
         }
-
-        notificationGroup.createNotification(
-            MyBundle.message("notification.title"),
-            message,
-            NotificationType.INFORMATION
-        ).notify(e.project)
     }
 
     override fun update(e: AnActionEvent) {

@@ -13,7 +13,7 @@
 - [x] Adjust the plugin description in `README` (see [Tips][docs:plugin-description])
 - [x] Review
   the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html?from=IJPluginTemplate).
-- [ ] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate)
+- [x] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate)
   for the first time.
 - [ ] Set the `MARKETPLACE_ID` in the above README badges. You can obtain it once the plugin is published to JetBrains
   Marketplace.
@@ -25,17 +25,20 @@
   about releases containing new features and fixes.
 
 <!-- Plugin description -->
-Upcaser is an IntelliJ Platform plugin that automatically capitalises the first letter of sentences in Markdown files.
+Upcaser is an IntelliJ Platform plugin that automatically capitalises the first letter of sentences in any text file.
 
 When you type a lowercase letter after sentence-ending punctuation (period, exclamation mark, or question mark) followed
 by whitespace, the plugin automatically converts it to uppercase.
 
 Features:
 
-- Automatic capitalisation after periods (.), exclamation marks (!), and question marks (?)
-- Works only in Markdown files (.md)
+- Automatic capitalisation after periods (.), exclamation marks (!), question marks (?), and ellipsis (...)
+- Works with any text file format, not limited to Markdown
 - Handles multiple spaces between punctuation and the next word
 - Capitalises the first letter at the beginning of the file
+- Status bar widget showing current activation status
+- Enhanced settings management with configurable shortcuts
+- Toggle functionality with visual feedback
 - Does not interfere with already capitalised letters or non-letter characters
 
 This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be
