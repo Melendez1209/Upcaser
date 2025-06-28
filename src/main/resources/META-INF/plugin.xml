@@ -1,12 +1,13 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.melendez1209.upcaser</id>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <name>Upcaser</name>
     <vendor email="markmelendez2008@outlook.com">Yiming Geng</vendor>
-    <description>Automatically capitalise letters after sentence-ending punctuation marks in any text file. Enhanced
-        with status bar widget and improved settings management. Supports periods, exclamation marks, question marks,
-        and ellipsis with customisable shortcuts.
+    <description>
+        Automatically capitalise letters after sentence-ending punctuation marks in any text file. Enhanced with the
+        status bar widget and improved settings management. Supports periods, exclamation marks, question marks, and
+        ellipsis with customisable shortcuts.
     </description>
 
     <depends>com.intellij.modules.platform</depends>
