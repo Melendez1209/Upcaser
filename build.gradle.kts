@@ -31,7 +31,7 @@ repositories {
 
 // Dependencies are managed with Gradle version catalog - read more: https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
 dependencies {
-    implementation("org.jetbrains:marketplace-zip-signer:0.1.38")
+    implementation("org.jetbrains:marketplace-zip-signer:0.1.42")
     testImplementation(libs.junit)
     testImplementation(libs.opentest4j)
 
