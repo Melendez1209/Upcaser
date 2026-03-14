@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-03-14
+
+### Added
+
+- Automatic capitalisation for Markdown headers (1-6 '#' followed by space)
+- Multi-language support for settings (Simplified Chinese, Traditional Chinese, English, British English)
+- Added 'Auto Add Space' feature for punctuation marks
+- Enhanced shortcut configuration with reset and clear options
+
 ## [1.1.0] - 2025-1-24
 
 ### Added
@@ -46,6 +55,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Works with any text file format
 - Configurable through IntelliJ IDEA settings
 - Supports multiple languages and character sets
+
+[1.2.0]: https://github.com/Melendez1209/Upcaser/releases/tag/1.2.0
 
 [1.1.0]: https://github.com/Melendez1209/Upcaser/releases/tag/1.1.0
 

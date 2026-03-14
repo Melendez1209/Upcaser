@@ -85,12 +85,31 @@ class AutoCapitalizeHandler : TypedHandlerDelegate() {
         }
 
         // Check if the character before current position was after a sentence ending
-        if (shouldCapitalizeAfterPunctuation(textBeforeCaret, settings)) {
+        if (shouldCapitalizeAfterPunctuation(textBeforeCaret, settings) ||
+            shouldCapitalizeAfterMarkdownHeader(textBeforeCaret, settings)
+        ) {
             // Replace the just-typed character with its uppercase version
             document.replaceString(caretOffset - 1, caretOffset, c.uppercaseChar().toString())
         }
 
         return Result.CONTINUE
+    }
+
+    /**
+     * Check if the character is the first letter of a Markdown header
+     */
+    private fun shouldCapitalizeAfterMarkdownHeader(textBefore: String, settings: UpcaserSettings): Boolean {
+        if (!settings.isMarkdownHeaderEnabled) {
+            return false
+        }
+
+        // Get the current line content before the cursor
+        val lastLineStart = textBefore.lastIndexOf('\n') + 1
+        val lastLine = textBefore.substring(lastLineStart)
+
+        // Regex pattern: starts with 1 to 6 # followed by at least one space
+        val markdownHeaderRegex = Regex("^#{1,6} +$")
+        return markdownHeaderRegex.matches(lastLine)
     }
 
 

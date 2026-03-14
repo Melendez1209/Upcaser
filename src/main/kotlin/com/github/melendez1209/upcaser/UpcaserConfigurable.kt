@@ -44,6 +44,10 @@ class UpcaserConfigurable : Configurable {
                     checkBox(MyBundle.message("Settings.Ellipsis"))
                         .bindSelected(settings::isEllipsisEnabled, settings::setEllipsisEnabled)
                 }
+                row {
+                    checkBox(MyBundle.message("Settings.MarkdownHeader"))
+                        .bindSelected(settings::isMarkdownHeaderEnabled, settings::setMarkdownHeaderEnabled)
+                }
             }
 
             group(MyBundle.message("Settings.AutoSpace")) {
