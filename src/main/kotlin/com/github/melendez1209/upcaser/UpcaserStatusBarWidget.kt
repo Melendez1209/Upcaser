@@ -1,13 +1,16 @@
 package com.github.melendez1209.upcaser
 
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.options.ShowSettingsUtil
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.StatusBarWidget
 import com.intellij.openapi.wm.impl.status.EditorBasedWidget
 import com.intellij.util.Consumer
+import com.intellij.util.ui.UIUtil
 import java.awt.event.MouseEvent
+import javax.swing.Timer
 
 /**
  * Status bar widget to display and control Upcaser plugin state
@@ -17,6 +20,8 @@ class UpcaserStatusBarWidget(project: Project) : EditorBasedWidget(project), Sta
     companion object {
         const val ID = "UpcaserStatus"
     }
+
+    private var clickTimer: Timer? = null
 
     override fun ID(): String = ID
 
@@ -48,15 +53,31 @@ class UpcaserStatusBarWidget(project: Project) : EditorBasedWidget(project), Sta
     }
 
     override fun getClickConsumer(): Consumer<MouseEvent>? {
-        return Consumer { _: MouseEvent ->
-            // Toggle the plugin state
-            val settings = UpcaserSettings.getInstance()
-            val newState = !settings.isEnabled
-            settings.setEnabled(newState)
-
-            // Update the status bar display
-            myStatusBar?.updateWidget(ID())
+        return Consumer { event: MouseEvent ->
+            if (event.clickCount >= 2) {
+                // Double-click: open settings, cancel any pending single-click toggle
+                clickTimer?.stop()
+                clickTimer = null
+                ShowSettingsUtil.getInstance().showSettingsDialog(project, UpcaserConfigurable::class.java)
+            } else {
+                // Single click: delay the toggle to distinguish it from a double-click
+                clickTimer?.stop()
+                clickTimer = Timer(UIUtil.getMultiClickInterval()) {
+                    clickTimer = null
+                    val settings = UpcaserSettings.getInstance()
+                    settings.setEnabled(!settings.isEnabled)
+                    myStatusBar?.updateWidget(ID())
+                }
+                clickTimer?.isRepeats = false
+                clickTimer?.start()
+            }
         }
+    }
+
+    override fun dispose() {
+        clickTimer?.stop()
+        clickTimer = null
+        super.dispose()
     }
 
     override fun getAlignment(): Float = 0f

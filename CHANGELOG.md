@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-08-15
+
+### Added
+
+- Double-clicking the Upcaser status bar widget now opens the Upcaser settings
+
+### Fixed
+
+- Completed localisation data for all supported languages (US English, British English, Simplified Chinese, Traditional Chinese)
+
 ## [1.2.0] - 2026-03-14
 
 ### Added
@@ -55,6 +65,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Works with any text file format
 - Configurable through IntelliJ IDEA settings
 - Supports multiple languages and character sets
+
+[1.2.1]: https://github.com/Melendez1209/Upcaser/releases/tag/1.2.1
 
 [1.2.0]: https://github.com/Melendez1209/Upcaser/releases/tag/1.2.0
 

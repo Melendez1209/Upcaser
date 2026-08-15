@@ -3,8 +3,10 @@ package com.github.melendez1209.upcaser
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.ui.DialogPanel
+import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.dsl.builder.bindSelected
 import com.intellij.ui.dsl.builder.panel
+import com.intellij.ui.layout.selected
 import javax.swing.JComponent
 
 /**
@@ -21,10 +23,12 @@ class UpcaserConfigurable : Configurable {
     }
 
     override fun createComponent(): JComponent {
+        lateinit var enabledCheckBox: JBCheckBox
         panel = panel {
             row {
-                checkBox(MyBundle.message("Settings.Enabled"))
+                enabledCheckBox = checkBox(MyBundle.message("Settings.Enabled"))
                     .bindSelected(settings::isEnabled, settings::setEnabled)
+                    .component
             }
 
             group(MyBundle.message("Settings.PunctuationMarks")) {
@@ -48,7 +52,7 @@ class UpcaserConfigurable : Configurable {
                     checkBox(MyBundle.message("Settings.MarkdownHeader"))
                         .bindSelected(settings::isMarkdownHeaderEnabled, settings::setMarkdownHeaderEnabled)
                 }
-            }
+            }.enabledIf(enabledCheckBox.selected)
 
             group(MyBundle.message("Settings.AutoSpace")) {
                 row {
@@ -56,7 +60,7 @@ class UpcaserConfigurable : Configurable {
                         .bindSelected(settings::isAutoAddSpaceEnabled, settings::setAutoAddSpaceEnabled)
                         .comment(MyBundle.message("Settings.AutoAddSpace.Description"))
                 }
-            }
+            }.enabledIf(enabledCheckBox.selected)
 
             group(MyBundle.message("Settings.Shortcut")) {
                 row {
