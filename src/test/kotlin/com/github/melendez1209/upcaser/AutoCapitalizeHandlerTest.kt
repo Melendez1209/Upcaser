@@ -59,6 +59,7 @@ class AutoCapitalizeHandlerTest : BasePlatformTestCase() {
     }
 
     fun testCapitalizeAtBeginningOfFile() {
+        myFixture.configureByText(PlainTextFileType.INSTANCE, "")
         myFixture.type("hello")
 
         // The first letter should be capitalised

@@ -52,6 +52,7 @@ class AutoCapitalizeHandler : TypedHandlerDelegate() {
 
                     if (textAfterCaret.isEmpty() || !textAfterCaret.first().isWhitespace()) {
                         document.insertString(caretOffset, " ")
+                        editor.caretModel.moveToOffset(caretOffset + 1)
                     }
                     return Result.CONTINUE
                 }
@@ -67,6 +68,7 @@ class AutoCapitalizeHandler : TypedHandlerDelegate() {
 
                 if (textAfterCaret.isEmpty() || !textAfterCaret.first().isWhitespace()) {
                     document.insertString(caretOffset, " ")
+                    editor.caretModel.moveToOffset(caretOffset + 1)
                 }
                 return Result.CONTINUE
             }

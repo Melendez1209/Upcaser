@@ -5,7 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.2.2] - 2026-08-28
+
+### Changed
+
+- Status bar widget toggles immediately on first click and detects a double-click within 500 ms to open settings instead
+
+### Fixed
+
+- Space insertion after an ellipsis no longer leaves the caret on the wrong side, so the following word is correctly
+  capitalised
+- Fixed the `testCapitalizeAtBeginningOfFile` and `testEllipsisCapitalizationAndSpacing` unit tests
 
 ## [1.2.1] - 2026-08-15
 
@@ -15,7 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Completed localisation data for all supported languages (US English, British English, Simplified Chinese, Traditional Chinese)
+- Completed localisation data for all supported languages (US English, British English, Simplified Chinese, Traditional
+  Chinese)
 
 ## [1.2.0] - 2026-03-14
 
@@ -65,6 +76,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Works with any text file format
 - Configurable through IntelliJ IDEA settings
 - Supports multiple languages and character sets
+
+[1.2.2]: https://github.com/Melendez1209/Upcaser/releases/tag/1.2.2
 
 [1.2.1]: https://github.com/Melendez1209/Upcaser/releases/tag/1.2.1
 

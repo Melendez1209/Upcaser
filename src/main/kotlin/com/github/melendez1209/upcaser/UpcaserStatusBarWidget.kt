@@ -55,18 +55,23 @@ class UpcaserStatusBarWidget(project: Project) : EditorBasedWidget(project), Sta
     override fun getClickConsumer(): Consumer<MouseEvent>? {
         return Consumer { event: MouseEvent ->
             if (event.clickCount >= 2) {
-                // Double-click: open settings, cancel any pending single-click toggle
+                // Double-click: undo the immediate single-click toggle, then open settings
                 clickTimer?.stop()
-                clickTimer = null
-                ShowSettingsUtil.getInstance().showSettingsDialog(project, UpcaserConfigurable::class.java)
-            } else {
-                // Single click: delay the toggle to distinguish it from a double-click
-                clickTimer?.stop()
-                clickTimer = Timer(UIUtil.getMultiClickInterval()) {
-                    clickTimer = null
+                if (clickTimer != null) {
                     val settings = UpcaserSettings.getInstance()
                     settings.setEnabled(!settings.isEnabled)
                     myStatusBar?.updateWidget(ID())
+                }
+                clickTimer = null
+                ShowSettingsUtil.getInstance().showSettingsDialog(project, UpcaserConfigurable::class.java)
+            } else {
+                // Single click: toggle immediately, start timer to detect double-click
+                clickTimer?.stop()
+                val settings = UpcaserSettings.getInstance()
+                settings.setEnabled(!settings.isEnabled)
+                myStatusBar?.updateWidget(ID())
+                clickTimer = Timer(UIUtil.getMultiClickInterval()) {
+                    clickTimer = null
                 }
                 clickTimer?.isRepeats = false
                 clickTimer?.start()
