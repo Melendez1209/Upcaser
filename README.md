@@ -13,12 +13,14 @@ by whitespace, the plugin automatically converts it to uppercase.
 
 Features:
 
-- Automatic capitalisation after periods (.), exclamation marks (!), question marks (?), ellipsis (...), and Markdown headers (#)
+- Automatic capitalisation after periods (.), exclamation marks (!), question marks (?), ellipsis (...), and Markdown
+  headers (#)
 - Works with any text file format, with special support for Markdown
 - Handles multiple spaces between punctuation and the next word
 - Capitalises the first letter at the beginning of the file
-- Status bar widget showing current activation status
+- Status bar widget showing current activation status, with an option to hide it
 - Enhanced settings management with configurable shortcuts
+- The plugin name "Upcaser" is never translated, in any language
 - Toggle functionality with visual feedback
 - Does not interfere with already capitalised letters or non-letter characters
 

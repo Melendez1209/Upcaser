@@ -2,7 +2,9 @@ package com.github.melendez1209.upcaser
 
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.options.ConfigurationException
+import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.ui.DialogPanel
+import com.intellij.openapi.wm.impl.status.widget.StatusBarWidgetsManager
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.dsl.builder.bindSelected
 import com.intellij.ui.dsl.builder.panel
@@ -62,6 +64,13 @@ class UpcaserConfigurable : Configurable {
                 }
             }.enabledIf(enabledCheckBox.selected)
 
+            group(MyBundle.message("Settings.StatusBar")) {
+                row {
+                    checkBox(MyBundle.message("Settings.ShowInStatusBar"))
+                        .bindSelected(settings::isShowInStatusBarEnabled, settings::setShowInStatusBar)
+                }
+            }
+
             group(MyBundle.message("Settings.Shortcut")) {
                 row {
                     label(MyBundle.message("Settings.Shortcut.Label"))
@@ -93,12 +102,30 @@ class UpcaserConfigurable : Configurable {
 
     @Throws(ConfigurationException::class)
     override fun apply() {
+        val showInStatusBarBefore = settings.isShowInStatusBarEnabled
         panel?.apply()
         shortcutField?.getShortcut()?.let { newShortcut ->
             if (newShortcut != settings.toggleShortcut) {
                 settings.setToggleShortcut(newShortcut)
                 updateShortcutInKeymap(newShortcut)
             }
+        }
+        if (settings.isShowInStatusBarEnabled != showInStatusBarBefore) {
+            refreshStatusBarWidgets()
+        }
+    }
+
+    /**
+     * Makes the platform re-evaluate the status bar widgets, so that hiding or showing the
+     * widget takes effect without restarting the IDE.
+     *
+     * [StatusBarWidgetsManager.updateAllWidgets] only refreshes widgets that are already
+     * registered, so the factory has to be passed explicitly to (re)create it.
+     */
+    private fun refreshStatusBarWidgets() {
+        for (project in ProjectManager.getInstance().openProjects) {
+            project.getService(StatusBarWidgetsManager::class.java)
+                ?.updateWidget(UpcaserStatusBarWidgetFactory::class.java)
         }
     }
 

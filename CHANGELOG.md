@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.3] - 2026-10-03
+
+### Added
+
+- New setting to show or hide the status bar widget
+- The plugin name "Upcaser" is now kept untranslated in every language
+
+### Fixed
+
+- Re-enabling the status bar widget after hiding it now works without restarting the IDE
+
 ## [1.2.2] - 2026-08-28
 
 ### Changed
@@ -76,6 +87,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Works with any text file format
 - Configurable through IntelliJ IDEA settings
 - Supports multiple languages and character sets
+
+[1.2.3]: https://github.com/Melendez1209/Upcaser/releases/tag/1.2.3
 
 [1.2.2]: https://github.com/Melendez1209/Upcaser/releases/tag/1.2.2
 

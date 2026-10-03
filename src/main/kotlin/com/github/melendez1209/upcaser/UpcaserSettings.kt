@@ -21,6 +21,7 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
         var enabledForEllipsis: Boolean = true,
         var enabledForMarkdownHeader: Boolean = true,
         var autoAddSpace: Boolean = true,
+        var showInStatusBar: Boolean = true,
         var toggleShortcut: String = "ctrl shift X"
     )
 
@@ -46,6 +47,7 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
     val isEllipsisEnabled: Boolean get() = state.enabledForEllipsis
     val isMarkdownHeaderEnabled: Boolean get() = state.enabledForMarkdownHeader
     val isAutoAddSpaceEnabled: Boolean get() = state.autoAddSpace
+    val isShowInStatusBarEnabled: Boolean get() = state.showInStatusBar
     val toggleShortcut: String get() = state.toggleShortcut
 
     // Setters for configuration
@@ -75,6 +77,10 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
 
     fun setAutoAddSpaceEnabled(enabled: Boolean) {
         state.autoAddSpace = enabled
+    }
+
+    fun setShowInStatusBar(show: Boolean) {
+        state.showInStatusBar = show
     }
 
     fun setToggleShortcut(shortcut: String) {
