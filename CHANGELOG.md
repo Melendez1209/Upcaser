@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2026-10-21
+
+### Added
+
+- The automatic capitalisation now also applies to the multi-line text boxes of the IDE, such as the commit message
+  field, the AI chat input or the description fields of the VCS integrations
+- New setting to enable or disable the capitalisation inside the IDE text boxes
+- The capitalisation rules have been extracted into a reusable engine that is shared by the file editors and the text
+  boxes
+
+### Fixed
+
+- The automatic capitalisation no longer interferes with the undo of a text box, only freshly typed characters are
+  capitalised
+- Single line inputs, such as branch names or search fields, are no longer touched
+
+### Known limitations
+
+- Text boxes that are rendered inside a browser, such as the pull request forms of the GitHub and GitLab plugins, cannot
+  be supported by a plugin
+
 ## [1.2.3] - 2026-10-03
 
 ### Added
@@ -87,6 +108,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Works with any text file format
 - Configurable through IntelliJ IDEA settings
 - Supports multiple languages and character sets
+
+[2.0.0]: https://github.com/Melendez1209/Upcaser/releases/tag/2.0.0
 
 [1.2.3]: https://github.com/Melendez1209/Upcaser/releases/tag/1.2.3
 

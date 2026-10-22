@@ -1,13 +1,13 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.melendez1209.upcaser</id>
-    <version>1.2.3</version>
+    <version>2.0.0</version>
     <name>Upcaser</name>
     <vendor email="markmelendez2008@outlook.com">Yiming Geng</vendor>
     <description>
-        Automatically capitalise letters after sentence-ending punctuation marks in any text file. Enhanced with the
-        status bar widget and improved settings management. Supports periods, exclamation marks, question marks, and
-        ellipsis with customisable shortcuts.
+        Automatically capitalise letters after sentence-ending punctuation marks in any text file and in the
+        multi-line text boxes of the IDE. Enhanced with the status bar widget and improved settings management.
+        Supports periods, exclamation marks, question marks, and ellipsis with customisable shortcuts.
     </description>
 
     <depends>com.intellij.modules.platform</depends>
@@ -25,6 +25,7 @@
                                 implementation="com.github.melendez1209.upcaser.UpcaserStatusBarWidgetFactory"/>
         <notificationGroup id="Upcaser" displayType="BALLOON" bundle="messages.MyBundle"
                            key="notification.group.upcaser"/>
+        <postStartupActivity implementation="com.github.melendez1209.upcaser.UpcaserStartupActivity"/>
     </extensions>
 
     <actions>

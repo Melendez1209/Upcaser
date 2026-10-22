@@ -5,6 +5,7 @@ import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
+import com.github.melendez1209.upcaser.core.CapitalizationRules
 
 /**
  * Settings for the Upcaser plugin
@@ -20,6 +21,7 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
         var enabledForQuestion: Boolean = true,
         var enabledForEllipsis: Boolean = true,
         var enabledForMarkdownHeader: Boolean = true,
+        var enabledInTextBoxes: Boolean = true,
         var autoAddSpace: Boolean = true,
         var showInStatusBar: Boolean = true,
         var toggleShortcut: String = "ctrl shift X"
@@ -46,6 +48,7 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
     val isQuestionEnabled: Boolean get() = state.enabledForQuestion
     val isEllipsisEnabled: Boolean get() = state.enabledForEllipsis
     val isMarkdownHeaderEnabled: Boolean get() = state.enabledForMarkdownHeader
+    val isTextBoxesEnabled: Boolean get() = state.enabledInTextBoxes
     val isAutoAddSpaceEnabled: Boolean get() = state.autoAddSpace
     val isShowInStatusBarEnabled: Boolean get() = state.showInStatusBar
     val toggleShortcut: String get() = state.toggleShortcut
@@ -75,6 +78,10 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
         state.enabledForMarkdownHeader = enabled
     }
 
+    fun setTextBoxesEnabled(enabled: Boolean) {
+        state.enabledInTextBoxes = enabled
+    }
+
     fun setAutoAddSpaceEnabled(enabled: Boolean) {
         state.autoAddSpace = enabled
     }
@@ -86,4 +93,16 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
     fun setToggleShortcut(shortcut: String) {
         state.toggleShortcut = shortcut
     }
-} 
+}
+
+/**
+ * Builds an immutable snapshot of the capitalisation related settings.
+ */
+fun UpcaserSettings.toRules(): CapitalizationRules = CapitalizationRules(
+    periodEnabled = isPeriodEnabled,
+    exclamationEnabled = isExclamationEnabled,
+    questionEnabled = isQuestionEnabled,
+    ellipsisEnabled = isEllipsisEnabled,
+    markdownHeaderEnabled = isMarkdownHeaderEnabled,
+    autoAddSpaceEnabled = isAutoAddSpaceEnabled
+) 

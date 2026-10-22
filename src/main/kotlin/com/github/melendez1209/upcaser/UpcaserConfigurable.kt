@@ -64,6 +64,14 @@ class UpcaserConfigurable : Configurable {
                 }
             }.enabledIf(enabledCheckBox.selected)
 
+            group(MyBundle.message("Settings.TextBoxes")) {
+                row {
+                    checkBox(MyBundle.message("Settings.EnableInTextBoxes"))
+                        .bindSelected(settings::isTextBoxesEnabled, settings::setTextBoxesEnabled)
+                        .comment(MyBundle.message("Settings.EnableInTextBoxes.Description"))
+                }
+            }.enabledIf(enabledCheckBox.selected)
+
             group(MyBundle.message("Settings.StatusBar")) {
                 row {
                     checkBox(MyBundle.message("Settings.ShowInStatusBar"))
