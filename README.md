@@ -4,48 +4,43 @@
 [![Version](https://img.shields.io/jetbrains/plugin/v/27707-upcaser.svg)](https://plugins.jetbrains.com/plugin/27707-upcaser)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/27707-upcaser.svg)](https://plugins.jetbrains.com/plugin/27707-upcaser)
 
-## Template ToDo list
-
-- [x] Create a new [IntelliJ Platform Plugin Template][template] project.
-- [x] Get familiar with the [template documentation][template].
-- [x] Adjust the [pluginGroup](./gradle.properties) and [pluginName](./gradle.properties), as well as
-  the [id](./src/main/resources/META-INF/plugin.xml) and [sources package](./src/main/kotlin).
-- [x] Adjust the plugin description in `README` (see [Tips][docs:plugin-description])
-- [x] Review
-  the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html?from=IJPluginTemplate).
-- [x] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate)
-  for the first time.
-- [x] Set the `MARKETPLACE_ID` in the above README badges. You can obtain it once the plugin is published to JetBrains
-  Marketplace.
-- [x] Set the [Plugin Signing](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html?from=IJPluginTemplate)
-  related [secrets](https://github.com/JetBrains/intellij-platform-plugin-template#environment-variables).
-- [ ] Set
-  the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html?from=IJPluginTemplate).
-- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified
-  about releases containing new features and fixes.
 
 <!-- Plugin description -->
-Upcaser is an IntelliJ Platform plugin that automatically capitalises the first letter of sentences in any text file.
+Upcaser is an IntelliJ Platform plugin that automatically capitalises the first letter of sentences in any text file
+and in the multi-line text boxes of the IDE.
 
 When you type a lowercase letter after sentence-ending punctuation (period, exclamation mark, or question mark) followed
 by whitespace, the plugin automatically converts it to uppercase.
 
 Features:
 
-- Automatic capitalisation after periods (.), exclamation marks (!), question marks (?), and ellipsis (...)
-- Works with any text file format, not limited to Markdown
+- Automatic capitalisation after periods (.), exclamation marks (!), question marks (?), ellipsis (...), and Markdown
+  headers (#)
+- Works with any text file format, with special support for Markdown
+- Works in the multi-line text boxes of the IDE, such as the commit message field, the AI chat input or the description
+  fields of the VCS integrations
+- Applies the Upcaser capitalisation rules to the selected text, either with the `Ctrl+Alt+U` shortcut or from the editor
+  context menu
 - Handles multiple spaces between punctuation and the next word
 - Capitalises the first letter at the beginning of the file
-- Status bar widget showing current activation status
+- Status bar widget showing current activation status, with an option to hide it
 - Enhanced settings management with configurable shortcuts
+- The plugin name "Upcaser" is never translated, in any language
 - Toggle functionality with visual feedback
 - Does not interfere with already capitalised letters or non-letter characters
 
 This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be
 extracted by the [Gradle](/build.gradle.kts) during the build process.
 
-To keep everything working, do not remove `<!-- ... -->` sections.
 <!-- Plugin description end -->
+
+## Limitations
+
+The plugin capitalises the text boxes that are rendered with Swing or with the IntelliJ Platform editor. Text boxes that
+are rendered inside a browser, such as the pull request and issue forms of the GitHub and GitLab plugins, cannot be
+supported because a plugin has no access to the document of an embedded browser.
+
+Single line inputs, such as branch names, search fields or path fields, are never touched.
 
 ## Installation
 

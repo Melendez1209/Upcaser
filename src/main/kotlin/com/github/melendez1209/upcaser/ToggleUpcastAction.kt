@@ -43,7 +43,6 @@ class ToggleUpcastAction : AnAction(), DumbAware {
 
     private fun showHintAtCursor(e: AnActionEvent, enabled: Boolean) {
         val editor = e.getData(CommonDataKeys.EDITOR) ?: return
-        val project = e.project ?: return
 
         val hintText = if (enabled) {
             MyBundle.message("hint.enabled")
