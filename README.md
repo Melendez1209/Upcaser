@@ -6,19 +6,26 @@
 
 
 <!-- Plugin description -->
-Upcaser is an IntelliJ Platform plugin that automatically capitalises the first letter of sentences in any text file.
+Upcaser is an IntelliJ Platform plugin that automatically capitalises the first letter of sentences in any text file
+and in the multi-line text boxes of the IDE.
 
 When you type a lowercase letter after sentence-ending punctuation (period, exclamation mark, or question mark) followed
 by whitespace, the plugin automatically converts it to uppercase.
 
 Features:
 
-- Automatic capitalisation after periods (.), exclamation marks (!), question marks (?), ellipsis (...), and Markdown headers (#)
+- Automatic capitalisation after periods (.), exclamation marks (!), question marks (?), ellipsis (...), and Markdown
+  headers (#)
 - Works with any text file format, with special support for Markdown
+- Works in the multi-line text boxes of the IDE, such as the commit message field, the AI chat input or the description
+  fields of the VCS integrations
+- Applies the Upcaser capitalisation rules to the selected text, either with the `Ctrl+Alt+U` shortcut or from the editor
+  context menu
 - Handles multiple spaces between punctuation and the next word
 - Capitalises the first letter at the beginning of the file
-- Status bar widget showing current activation status
+- Status bar widget showing current activation status, with an option to hide it
 - Enhanced settings management with configurable shortcuts
+- The plugin name "Upcaser" is never translated, in any language
 - Toggle functionality with visual feedback
 - Does not interfere with already capitalised letters or non-letter characters
 
@@ -26,6 +33,14 @@ This specific section is a source for the [plugin.xml](/src/main/resources/META-
 extracted by the [Gradle](/build.gradle.kts) during the build process.
 
 <!-- Plugin description end -->
+
+## Limitations
+
+The plugin capitalises the text boxes that are rendered with Swing or with the IntelliJ Platform editor. Text boxes that
+are rendered inside a browser, such as the pull request and issue forms of the GitHub and GitLab plugins, cannot be
+supported because a plugin has no access to the document of an embedded browser.
+
+Single line inputs, such as branch names, search fields or path fields, are never touched.
 
 ## Installation
 

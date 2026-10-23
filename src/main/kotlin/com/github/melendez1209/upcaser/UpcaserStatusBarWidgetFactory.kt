@@ -14,7 +14,7 @@ class UpcaserStatusBarWidgetFactory : StatusBarWidgetFactory {
 
     override fun getDisplayName(): String = MyBundle.message("statusbar.widget.displayname")
 
-    override fun isAvailable(project: Project): Boolean = true
+    override fun isAvailable(project: Project): Boolean = UpcaserSettings.getInstance().isShowInStatusBarEnabled
 
     override fun createWidget(project: Project): StatusBarWidget {
         return UpcaserStatusBarWidget(project)
