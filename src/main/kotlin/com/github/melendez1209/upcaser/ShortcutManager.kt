@@ -1,6 +1,5 @@
 package com.github.melendez1209.upcaser
 
-import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.KeyboardShortcut
 import com.intellij.openapi.keymap.KeymapManager
 import javax.swing.KeyStroke
@@ -10,17 +9,26 @@ import javax.swing.KeyStroke
  */
 object ShortcutManager {
 
-    private const val ACTION_ID = "upcaser.toggle"
+    const val TOGGLE_ACTION_ID = "upcaser.toggle"
+    const val UPCASE_SELECTION_ACTION_ID = "upcaser.upcase.selection"
 
-    fun updateShortcut(shortcutText: String) {
-        val actionManager = ActionManager.getInstance()
+    const val DEFAULT_TOGGLE_SHORTCUT = "ctrl shift X"
+    const val DEFAULT_UPCASE_SHORTCUT = "ctrl alt U"
+
+    /**
+     * Replaces the shortcut of the given action.
+     *
+     * @param shortcutText the shortcut in the plugin format, e.g. `ctrl alt U`. An empty text
+     * unbinds the action.
+     */
+    fun updateShortcut(actionId: String, shortcutText: String) {
         val keymapManager = KeymapManager.getInstance()
         val activeKeymap = keymapManager.activeKeymap
 
         // Remove existing shortcuts for this action
-        val existingShortcuts = activeKeymap.getShortcuts(ACTION_ID)
+        val existingShortcuts = activeKeymap.getShortcuts(actionId)
         existingShortcuts.forEach { shortcut ->
-            activeKeymap.removeShortcut(ACTION_ID, shortcut)
+            activeKeymap.removeShortcut(actionId, shortcut)
         }
 
         // Add new shortcut if provided
@@ -29,7 +37,7 @@ object ShortcutManager {
                 val keyStroke = parseShortcutText(shortcutText)
                 if (keyStroke != null) {
                     val keyboardShortcut = KeyboardShortcut(keyStroke, null)
-                    activeKeymap.addShortcut(ACTION_ID, keyboardShortcut)
+                    activeKeymap.addShortcut(actionId, keyboardShortcut)
                 }
             } catch (e: Exception) {
                 // Handle parsing error
@@ -77,20 +85,21 @@ object ShortcutManager {
         return null
     }
 
-    fun getCurrentShortcutText(): String {
+    /**
+     * Returns the shortcut of the given action, or an empty text when the action is unbound.
+     */
+    fun getCurrentShortcutText(actionId: String): String {
         val keymapManager = KeymapManager.getInstance()
         val activeKeymap = keymapManager.activeKeymap
-        val shortcuts = activeKeymap.getShortcuts(ACTION_ID)
+        val shortcuts = activeKeymap.getShortcuts(actionId)
 
-        if (shortcuts.isNotEmpty()) {
-            val shortcut = shortcuts.first()
-            if (shortcut is KeyboardShortcut) {
-                return formatKeyStroke(shortcut.firstKeyStroke)
-            }
+        val shortcut = shortcuts.filterIsInstance<KeyboardShortcut>().firstOrNull()
+        if (shortcut != null) {
+            return formatKeyStroke(shortcut.firstKeyStroke)
         }
 
-        // Return default if no shortcut found
-        return "ctrl shift X"
+        // The action is unbound
+        return ""
     }
 
     private fun formatKeyStroke(keyStroke: KeyStroke): String {
@@ -106,4 +115,4 @@ object ShortcutManager {
 
         return (modifiers + keyText).joinToString(" ")
     }
-} 
+}
