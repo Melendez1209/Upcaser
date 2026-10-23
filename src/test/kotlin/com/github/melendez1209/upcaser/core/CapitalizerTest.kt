@@ -1,5 +1,6 @@
 package com.github.melendez1209.upcaser.core
 
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -109,5 +110,61 @@ class CapitalizerTest {
 
         val withoutQuestion = rules.copy(questionEnabled = false)
         assertFalse(Capitalizer.needsSpaceAfter('?', "Hello", withoutQuestion))
+    }
+
+    @Test
+    fun capitaliseTextAtTheBeginning() {
+        assertEquals("Hello world", Capitalizer.capitalise("hello world", rules))
+    }
+
+    @Test
+    fun capitaliseTextAfterSentenceEndingPunctuation() {
+        assertEquals("Hello. World", Capitalizer.capitalise("hello. world", rules))
+        assertEquals("Hello! World", Capitalizer.capitalise("hello! world", rules))
+        assertEquals("Hello? World", Capitalizer.capitalise("hello? world", rules))
+    }
+
+    @Test
+    fun capitaliseTextAfterAnEllipsis() {
+        assertEquals("Wait... Here", Capitalizer.capitalise("wait... here", rules))
+    }
+
+    @Test
+    fun capitaliseTextAfterAMarkdownHeader() {
+        assertEquals("## Heading", Capitalizer.capitalise("## heading", rules))
+    }
+
+    @Test
+    fun capitaliseTextInTheMiddleOfASentence() {
+        assertEquals("Hello world", Capitalizer.capitalise("hello world", rules))
+        assertEquals("Hello world again", Capitalizer.capitalise("hello world again", rules))
+    }
+
+    @Test
+    fun capitaliseTextKeepsTheExistingSpaces() {
+        assertEquals("Hello. World", Capitalizer.capitalise("hello. world", rules))
+        assertEquals("Hello.  World", Capitalizer.capitalise("hello.  world", rules))
+    }
+
+    @Test
+    fun capitaliseTextLeavesCapitalisedTextUntouched() {
+        assertEquals("Hello World", Capitalizer.capitalise("Hello World", rules))
+        assertEquals("", Capitalizer.capitalise("", rules))
+    }
+
+    @Test
+    fun capitaliseTextWithDisabledPunctuationMarks() {
+        val withoutPeriod = rules.copy(periodEnabled = false)
+        assertEquals("Hello. world", Capitalizer.capitalise("hello. world", withoutPeriod))
+    }
+
+    @Test
+    fun capitaliseTextOfEverySentence() {
+        val text = "first sentence. second sentence! third sentence? fourth sentence"
+
+        assertEquals(
+            "First sentence. Second sentence! Third sentence? Fourth sentence",
+            Capitalizer.capitalise(text, rules)
+        )
     }
 }

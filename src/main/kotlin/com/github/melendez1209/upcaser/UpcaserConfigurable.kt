@@ -19,6 +19,7 @@ class UpcaserConfigurable : Configurable {
     private var panel: DialogPanel? = null
     private val settings = UpcaserSettings.getInstance()
     private var shortcutField: ShortcutTextField? = null
+    private var upcaseShortcutField: ShortcutTextField? = null
 
     override fun getDisplayName(): String {
         return MyBundle.message("Settings.Title")
@@ -87,10 +88,23 @@ class UpcaserConfigurable : Configurable {
                         it.setShortcut(settings.toggleShortcut)
                     })
                     button(MyBundle.message("Settings.Shortcut.Reset")) {
-                        shortcutField?.setShortcut("ctrl shift X")
+                        shortcutField?.setShortcut(DEFAULT_TOGGLE_SHORTCUT)
                     }
                     button(MyBundle.message("Settings.Shortcut.Clear")) {
                         shortcutField?.clearShortcut()
+                    }
+                }
+                row {
+                    label(MyBundle.message("Settings.Shortcut.Upcase.Label"))
+                    cell(ShortcutTextField().also {
+                        upcaseShortcutField = it
+                        it.setShortcut(settings.upcaseSelectionShortcut)
+                    })
+                    button(MyBundle.message("Settings.Shortcut.Reset")) {
+                        upcaseShortcutField?.setShortcut(DEFAULT_UPCASE_SHORTCUT)
+                    }
+                    button(MyBundle.message("Settings.Shortcut.Clear")) {
+                        upcaseShortcutField?.clearShortcut()
                     }
                 }.comment(MyBundle.message("Settings.Shortcut.Description"))
             }
@@ -105,7 +119,9 @@ class UpcaserConfigurable : Configurable {
     override fun isModified(): Boolean {
         val panelModified = panel?.isModified() ?: false
         val shortcutModified = shortcutField?.getShortcut() != settings.toggleShortcut
-        return panelModified || shortcutModified
+        val upcaseShortcutModified =
+            upcaseShortcutField?.getShortcut() != settings.upcaseSelectionShortcut
+        return panelModified || shortcutModified || upcaseShortcutModified
     }
 
     @Throws(ConfigurationException::class)
@@ -115,7 +131,13 @@ class UpcaserConfigurable : Configurable {
         shortcutField?.getShortcut()?.let { newShortcut ->
             if (newShortcut != settings.toggleShortcut) {
                 settings.setToggleShortcut(newShortcut)
-                updateShortcutInKeymap(newShortcut)
+                updateShortcutInKeymap(ShortcutManager.TOGGLE_ACTION_ID, newShortcut)
+            }
+        }
+        upcaseShortcutField?.getShortcut()?.let { newShortcut ->
+            if (newShortcut != settings.upcaseSelectionShortcut) {
+                settings.setUpcaseSelectionShortcut(newShortcut)
+                updateShortcutInKeymap(ShortcutManager.UPCASE_SELECTION_ACTION_ID, newShortcut)
             }
         }
         if (settings.isShowInStatusBarEnabled != showInStatusBarBefore) {
@@ -140,11 +162,12 @@ class UpcaserConfigurable : Configurable {
     override fun reset() {
         panel?.reset()
         shortcutField?.setShortcut(settings.toggleShortcut)
+        upcaseShortcutField?.setShortcut(settings.upcaseSelectionShortcut)
     }
 
-    private fun updateShortcutInKeymap(shortcut: String) {
+    private fun updateShortcutInKeymap(actionId: String, shortcut: String) {
         try {
-            ShortcutManager.updateShortcut(shortcut)
+            ShortcutManager.updateShortcut(actionId, shortcut)
         } catch (e: Exception) {
             // Handle error updating keymap
             println("Failed to update shortcut in keymap: ${e.message}")
@@ -154,5 +177,11 @@ class UpcaserConfigurable : Configurable {
     override fun disposeUIResources() {
         panel = null
         shortcutField = null
+        upcaseShortcutField = null
+    }
+
+    companion object {
+        const val DEFAULT_TOGGLE_SHORTCUT = ShortcutManager.DEFAULT_TOGGLE_SHORTCUT
+        const val DEFAULT_UPCASE_SHORTCUT = ShortcutManager.DEFAULT_UPCASE_SHORTCUT
     }
 }

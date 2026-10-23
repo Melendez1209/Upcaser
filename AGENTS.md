@@ -41,6 +41,7 @@ messages, Markdown files and similar content in British English.
     - `testCapitalizeAtBeginningOfFile` — NPE, the test itself is written incorrectly (calls `myFixture.type` directly
       without first `configureByText`)
     - `testEllipsisCapitalizationAndSpacing` — ComparisonFailure
+- As the plugin name, `Upcaser` should not be translated in the localisation files for any language version.
 
 ## Version Release
 

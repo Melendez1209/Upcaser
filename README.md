@@ -19,6 +19,8 @@ Features:
 - Works with any text file format, with special support for Markdown
 - Works in the multi-line text boxes of the IDE, such as the commit message field, the AI chat input or the description
   fields of the VCS integrations
+- Applies the Upcaser capitalisation rules to the selected text, either with the `Ctrl+Alt+U` shortcut or from the editor
+  context menu
 - Handles multiple spaces between punctuation and the next word
 - Capitalises the first letter at the beginning of the file
 - Status bar widget showing current activation status, with an option to hide it

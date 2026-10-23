@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New setting to enable or disable the capitalisation inside the IDE text boxes
 - The capitalisation rules have been extracted into a reusable engine that is shared by the file editors and the text
   boxes
+- New action that applies the Upcaser capitalisation rules to the selected text, bound to `Ctrl+Alt+U` and available in
+  the editor context menu
+- The shortcut of the new action can be changed or unbound in the settings of the plugin or in the keymap of the IDE
 
 ### Fixed
 

@@ -24,8 +24,6 @@ data class CapitalizationRules(
  */
 object Capitalizer {
 
-    private val MARKDOWN_HEADER = Regex("^#{1,6} +$")
-
     /**
      * Tells whether the character typed right after [textBefore] has to be capitalised.
      *
@@ -60,8 +58,67 @@ object Capitalizer {
      */
     fun isMarkdownHeaderContext(textBefore: CharSequence): Boolean {
         val lastLineStart = textBefore.lastIndexOf('\n') + 1
-        val lastLine = textBefore.substring(lastLineStart)
-        return MARKDOWN_HEADER.matches(lastLine)
+        return isMarkdownHeader(textBefore, lastLineStart, textBefore.length)
+    }
+
+    /**
+     * Applies the capitalisation rules to the given text.
+     *
+     * The text is treated as a standalone text, so the first letter is capitalised as well.
+     * The automatic space is not inserted, the text already has its own spacing.
+     *
+     * @param text the text to capitalise.
+     */
+    fun capitalise(text: CharSequence, rules: CapitalizationRules): String {
+        val result = StringBuilder(text.length)
+        var lineStart = 0
+
+        for (index in text.indices) {
+            val character = text[index]
+
+            if (character.isLetter() && !character.isUpperCase()) {
+                val before = PrefixView(result, 0, index)
+                val capitalise = shouldCapitalize(before, rules) ||
+                        (rules.markdownHeaderEnabled && isMarkdownHeader(result, lineStart, index))
+
+                result.append(if (capitalise) character.uppercaseChar() else character)
+            } else {
+                result.append(character)
+            }
+
+            if (character == '\n') {
+                lineStart = index + 1
+            }
+        }
+
+        return result.toString()
+    }
+
+    /**
+     * Checks that the `[from, to)` range is a Markdown header, e.g. `## `.
+     */
+    private fun isMarkdownHeader(text: CharSequence, from: Int, to: Int): Boolean {
+        var index = from
+        var hashes = 0
+
+        while (index < to && text[index] == '#') {
+            hashes++
+            index++
+        }
+
+        if (hashes < 1 || hashes > 6) {
+            return false
+        }
+
+        if (index >= to) {
+            return false // A header needs at least one space
+        }
+
+        while (index < to && text[index] == ' ') {
+            index++
+        }
+
+        return index == to
     }
 
     /**
@@ -105,4 +162,24 @@ object Capitalizer {
 
         return true
     }
+}
+
+/**
+ * A view over a part of a [StringBuilder], it avoids copying the text.
+ */
+private class PrefixView(
+    private val builder: StringBuilder,
+    private val start: Int,
+    private val end: Int
+) : CharSequence {
+
+    override val length: Int
+        get() = end - start
+
+    override fun get(index: Int): Char = builder[start + index]
+
+    override fun subSequence(startIndex: Int, endIndex: Int): CharSequence =
+        PrefixView(builder, start + startIndex, start + endIndex)
+
+    override fun toString(): String = builder.substring(start, end)
 }

@@ -24,7 +24,8 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
         var enabledInTextBoxes: Boolean = true,
         var autoAddSpace: Boolean = true,
         var showInStatusBar: Boolean = true,
-        var toggleShortcut: String = "ctrl shift X"
+        var toggleShortcut: String = ShortcutManager.DEFAULT_TOGGLE_SHORTCUT,
+        var upcaseSelectionShortcut: String = ShortcutManager.DEFAULT_UPCASE_SHORTCUT
     )
 
     private var state = State()
@@ -52,6 +53,7 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
     val isAutoAddSpaceEnabled: Boolean get() = state.autoAddSpace
     val isShowInStatusBarEnabled: Boolean get() = state.showInStatusBar
     val toggleShortcut: String get() = state.toggleShortcut
+    val upcaseSelectionShortcut: String get() = state.upcaseSelectionShortcut
 
     // Setters for configuration
     fun setEnabled(enabled: Boolean) {
@@ -92,6 +94,10 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
 
     fun setToggleShortcut(shortcut: String) {
         state.toggleShortcut = shortcut
+    }
+
+    fun setUpcaseSelectionShortcut(shortcut: String) {
+        state.upcaseSelectionShortcut = shortcut
     }
 }
 
