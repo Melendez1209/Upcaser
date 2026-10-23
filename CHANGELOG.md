@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New action that applies the Upcaser capitalisation rules to the selected text, bound to `Ctrl+Alt+U` and available in
   the editor context menu
 - The shortcut of the new action can be changed or unbound in the settings of the plugin or in the keymap of the IDE
+- Markdown list support: the first letter after list markers (`-`, `*`, `+`, `1.`, `10.`, etc.) is capitalised, with
+  support for indented sub-lists
+- New setting to enable or disable the capitalisation inside Markdown lists
 
 ### Fixed
 

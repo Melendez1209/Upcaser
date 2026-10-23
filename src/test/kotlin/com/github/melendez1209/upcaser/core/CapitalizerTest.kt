@@ -135,6 +135,42 @@ class CapitalizerTest {
     }
 
     @Test
+    fun capitaliseTextAfterMarkdownUnorderedList() {
+        assertEquals("- Item", Capitalizer.capitalise("- item", rules))
+        assertEquals("* Item", Capitalizer.capitalise("* item", rules))
+        assertEquals("+ Item", Capitalizer.capitalise("+ item", rules))
+    }
+
+    @Test
+    fun capitaliseTextAfterMarkdownOrderedList() {
+        assertEquals("1. Item", Capitalizer.capitalise("1. item", rules))
+        assertEquals("10. Item", Capitalizer.capitalise("10. item", rules))
+    }
+
+    @Test
+    fun capitaliseTextAfterIndentedMarkdownList() {
+        assertEquals("  - Item", Capitalizer.capitalise("  - item", rules))
+        assertEquals("\t* Item", Capitalizer.capitalise("\t* item", rules))
+    }
+
+    @Test
+    fun capitaliseTextInMultiLineMarkdownList() {
+        val text = "- first item\n- second item\n- third item"
+
+        assertEquals(
+            "- First item\n- Second item\n- Third item",
+            Capitalizer.capitalise(text, rules)
+        )
+    }
+
+    @Test
+    fun capitaliseTextWithDisabledMarkdownList() {
+        val withoutList = rules.copy(markdownListEnabled = false, periodEnabled = false)
+        assertEquals("- item", Capitalizer.capitalise("- item", withoutList))
+        assertEquals("1. item", Capitalizer.capitalise("1. item", withoutList))
+    }
+
+    @Test
     fun capitaliseTextInTheMiddleOfASentence() {
         assertEquals("Hello world", Capitalizer.capitalise("hello world", rules))
         assertEquals("Hello world again", Capitalizer.capitalise("hello world again", rules))

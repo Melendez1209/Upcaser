@@ -21,6 +21,7 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
         var enabledForQuestion: Boolean = true,
         var enabledForEllipsis: Boolean = true,
         var enabledForMarkdownHeader: Boolean = true,
+        var enabledForMarkdownList: Boolean = true,
         var enabledInTextBoxes: Boolean = true,
         var autoAddSpace: Boolean = true,
         var showInStatusBar: Boolean = true,
@@ -49,6 +50,7 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
     val isQuestionEnabled: Boolean get() = state.enabledForQuestion
     val isEllipsisEnabled: Boolean get() = state.enabledForEllipsis
     val isMarkdownHeaderEnabled: Boolean get() = state.enabledForMarkdownHeader
+    val isMarkdownListEnabled: Boolean get() = state.enabledForMarkdownList
     val isTextBoxesEnabled: Boolean get() = state.enabledInTextBoxes
     val isAutoAddSpaceEnabled: Boolean get() = state.autoAddSpace
     val isShowInStatusBarEnabled: Boolean get() = state.showInStatusBar
@@ -78,6 +80,10 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
 
     fun setMarkdownHeaderEnabled(enabled: Boolean) {
         state.enabledForMarkdownHeader = enabled
+    }
+
+    fun setMarkdownListEnabled(enabled: Boolean) {
+        state.enabledForMarkdownList = enabled
     }
 
     fun setTextBoxesEnabled(enabled: Boolean) {
@@ -110,5 +116,6 @@ fun UpcaserSettings.toRules(): CapitalizationRules = CapitalizationRules(
     questionEnabled = isQuestionEnabled,
     ellipsisEnabled = isEllipsisEnabled,
     markdownHeaderEnabled = isMarkdownHeaderEnabled,
+    markdownListEnabled = isMarkdownListEnabled,
     autoAddSpaceEnabled = isAutoAddSpaceEnabled
 ) 

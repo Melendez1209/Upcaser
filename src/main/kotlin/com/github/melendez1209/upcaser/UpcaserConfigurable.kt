@@ -55,6 +55,11 @@ class UpcaserConfigurable : Configurable {
                     checkBox(MyBundle.message("Settings.MarkdownHeader"))
                         .bindSelected(settings::isMarkdownHeaderEnabled, settings::setMarkdownHeaderEnabled)
                 }
+                row {
+                    checkBox(MyBundle.message("Settings.MarkdownList"))
+                        .bindSelected(settings::isMarkdownListEnabled, settings::setMarkdownListEnabled)
+                        .comment(MyBundle.message("Settings.MarkdownList.Description"))
+                }
             }.enabledIf(enabledCheckBox.selected)
 
             group(MyBundle.message("Settings.AutoSpace")) {

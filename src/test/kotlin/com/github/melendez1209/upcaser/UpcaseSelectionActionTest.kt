@@ -32,6 +32,26 @@ class UpcaseSelectionActionTest : BasePlatformTestCase() {
         assertCapitalised("## heading", "## Heading")
     }
 
+    fun testCapitalisesAfterMarkdownUnorderedList() {
+        assertCapitalised("- item", "- Item")
+        assertCapitalised("* item", "* Item")
+        assertCapitalised("+ item", "+ Item")
+    }
+
+    fun testCapitalisesAfterMarkdownOrderedList() {
+        assertCapitalised("1. item", "1. Item")
+        assertCapitalised("10. item", "10. Item")
+    }
+
+    fun testCapitalisesAfterIndentedMarkdownList() {
+        assertCapitalised("  - item", "  - Item")
+        assertCapitalised("\t* item", "\t* Item")
+    }
+
+    fun testCapitalisesInMultiLineMarkdownList() {
+        assertCapitalised("- first item\n- second item", "- First item\n- Second item")
+    }
+
     fun testDoesNotCapitaliseInTheMiddleOfASentence() {
         assertCapitalised("hello world", "Hello world")
     }

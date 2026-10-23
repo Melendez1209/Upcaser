@@ -13,6 +13,7 @@ data class CapitalizationRules(
     val questionEnabled: Boolean = true,
     val ellipsisEnabled: Boolean = true,
     val markdownHeaderEnabled: Boolean = true,
+    val markdownListEnabled: Boolean = true,
     val autoAddSpaceEnabled: Boolean = true
 )
 
@@ -50,7 +51,28 @@ object Capitalizer {
             else -> false
         }
 
-        return endsSentence && isFollowedByWhitespaceOnly(trimmed.length, textBefore)
+        if (endsSentence && isFollowedByWhitespaceOnly(trimmed.length, textBefore)) {
+            return true
+        }
+
+        // Markdown list: - item, * item, + item, 1. item, 10. item
+        if (rules.markdownListEnabled && isMarkdownListPrefix(textBefore)) {
+            return true
+        }
+
+        return false
+    }
+
+    /**
+     * Tells whether the text before the caret is a Markdown list item, e.g. `- ` or `1. `.
+     *
+     * Leading whitespace (spaces or tabs) is allowed, so indented sub-lists are supported.
+     */
+    fun isMarkdownListContext(textBefore: CharSequence, rules: CapitalizationRules): Boolean {
+        if (!rules.markdownListEnabled) {
+            return false
+        }
+        return isMarkdownListPrefix(textBefore)
     }
 
     /**
@@ -119,6 +141,57 @@ object Capitalizer {
         }
 
         return index == to
+    }
+
+    /**
+     * Checks that [text] ends with a Markdown list marker, e.g. `- `, `* `, `+ `, `1. `, `10. `.
+     *
+     * Leading whitespace (spaces or tabs) before the marker is allowed, so indented sub-lists
+     * are supported.
+     */
+    private fun isMarkdownListPrefix(text: CharSequence): Boolean {
+        val len = text.length
+        if (len < 2 || text[len - 1] != ' ') {
+            return false
+        }
+
+        // Skip trailing spaces/tabs to find the last non-whitespace character
+        var index = len - 2
+        while (index >= 0 && (text[index] == ' ' || text[index] == '\t')) {
+            index--
+        }
+
+        if (index < 0) {
+            return false
+        }
+
+        // Unordered list: - * +
+        if (text[index] == '-' || text[index] == '*' || text[index] == '+') {
+            return isListStartAtPosition(text, index)
+        }
+
+        // Ordered list: digits followed by .
+        var digitEnd = index
+        while (digitEnd >= 0 && text[digitEnd].isDigit()) {
+            digitEnd--
+        }
+        if (digitEnd < index && text[index] == '.') {
+            return isListStartAtPosition(text, digitEnd)
+        }
+
+        return false
+    }
+
+    /**
+     * Checks that the character at [markerPos] is the start of a list marker, i.e. it is at the
+     * beginning of the line or preceded only by whitespace (spaces or tabs).
+     */
+    private fun isListStartAtPosition(text: CharSequence, markerPos: Int): Boolean {
+        var back = markerPos - 1
+        while (back >= 0 && (text[back] == ' ' || text[back] == '\t')) {
+            back--
+        }
+        return back < 0 || text[back] == '\n'
     }
 
     /**
