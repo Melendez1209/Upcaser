@@ -32,12 +32,21 @@ class AutoCapitalizeHandler : TypedHandlerDelegate() {
             return Result.CONTINUE
         }
 
+        val offset = caretOffset - 1
+        val tracker = UndoCapitalizationTracker.getInstance()
+        val suppress = tracker.shouldSuppressCapitalization(editor.document, offset)
+
         val outcome = CapitalizationApplier.applyInsertion(
             target = PlatformDocumentTarget(editor.document),
-            offset = caretOffset - 1,
+            offset = offset,
             insertedChar = c,
-            rules = settings.toRules()
+            rules = settings.toRules(),
+            suppressCapitalization = suppress
         )
+
+        if (outcome.capitalized) {
+            tracker.recordCapitalized(editor.document, offset)
+        }
 
         // Keep the caret behind the space that has just been inserted, otherwise the next
         // word would be typed in front of it.

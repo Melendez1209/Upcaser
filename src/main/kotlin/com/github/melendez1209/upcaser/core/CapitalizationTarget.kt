@@ -107,12 +107,15 @@ object CapitalizationApplier {
      *
      * @param offset the offset at which the character has been inserted.
      * @param insertedChar the character that has just been inserted.
+     * @param suppressCapitalization postpones the capitalisation of the letter, leaving the
+     *   automatic space untouched. Used when the word might be one of the user rejected with undo.
      */
     fun applyInsertion(
         target: CapitalizationTarget,
         offset: Int,
         insertedChar: Char,
-        rules: CapitalizationRules
+        rules: CapitalizationRules,
+        suppressCapitalization: Boolean = false
     ): InsertionOutcome {
         var spaceOffset = -1
 
@@ -124,7 +127,7 @@ object CapitalizationApplier {
             }
         }
 
-        if (!insertedChar.isLetter() || insertedChar.isUpperCase()) {
+        if (suppressCapitalization || !insertedChar.isLetter() || insertedChar.isUpperCase()) {
             return InsertionOutcome(spaceOffset)
         }
 
