@@ -100,6 +100,9 @@ class UndoCapitalizationTracker : Disposable {
      * soon as the word turns out to be different from the rejected one.
      */
     fun shouldSuppressCapitalization(document: Document, offset: Int): Boolean {
+        if (!UpcaserSettings.getInstance().isUndoSuppressionEnabled) {
+            return false
+        }
         val state = states[document] ?: return false
         advancePending(document, state, offset)
 
@@ -128,6 +131,9 @@ class UndoCapitalizationTracker : Disposable {
      * removes it can be recognised later.
      */
     fun recordCapitalized(document: Document, offset: Int) {
+        if (!UpcaserSettings.getInstance().isUndoSuppressionEnabled) {
+            return
+        }
         val state = states.getOrPut(document) { State() }
         state.marks.add(offset)
         trim(state.marks, MAX_MARKS)
@@ -191,6 +197,11 @@ class UndoCapitalizationTracker : Disposable {
         while (set.size > max) {
             set.remove(set.first())
         }
+    }
+
+    /** Forgets all tracked capitalisations, e.g. when the setting is toggled. */
+    fun reset() {
+        states.clear()
     }
 
     override fun dispose() {

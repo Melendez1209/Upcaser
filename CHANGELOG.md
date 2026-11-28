@@ -1,9 +1,21 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
-
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [2.1.0] - 2026-11-28
+
+### Added
+
+- New setting to ignore an automatic capitalisation that the user rejected with undo: typing the same word again keeps
+  it lowercase once
+
+### Fixed
+
+- The deprecated `Document.addDocumentListener(DocumentListener)` overload is no longer used
 
 ## [2.0.0] - 2026-10-21
 
@@ -115,16 +127,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Configurable through IntelliJ IDEA settings
 - Supports multiple languages and character sets
 
-[2.0.0]: https://github.com/Melendez1209/Upcaser/releases/tag/2.0.0
-
-[1.2.3]: https://github.com/Melendez1209/Upcaser/releases/tag/1.2.3
-
-[1.2.2]: https://github.com/Melendez1209/Upcaser/releases/tag/1.2.2
-
-[1.2.1]: https://github.com/Melendez1209/Upcaser/releases/tag/1.2.1
-
-[1.2.0]: https://github.com/Melendez1209/Upcaser/releases/tag/1.2.0
-
-[1.1.0]: https://github.com/Melendez1209/Upcaser/releases/tag/1.1.0
-
-[1.0.3]: https://github.com/Melendez1209/Upcaser/releases/tag/1.0.3
+[Unreleased]: https://github.com/Melendez1209/Upcaser/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/Melendez1209/Upcaser/compare/v2.0.0...v2.1.0
+[2.0.0]: https://github.com/Melendez1209/Upcaser/compare/v1.2.3...v2.0.0
+[1.2.3]: https://github.com/Melendez1209/Upcaser/compare/v1.2.2...v1.2.3
+[1.2.2]: https://github.com/Melendez1209/Upcaser/compare/v1.2.1...v1.2.2
+[1.2.1]: https://github.com/Melendez1209/Upcaser/compare/v1.2.0...v1.2.1
+[1.2.0]: https://github.com/Melendez1209/Upcaser/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/Melendez1209/Upcaser/compare/v1.0.3...v1.1.0
+[1.0.3]: https://github.com/Melendez1209/Upcaser/commits/v1.0.3

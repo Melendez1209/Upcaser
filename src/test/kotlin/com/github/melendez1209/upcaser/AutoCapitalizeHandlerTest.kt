@@ -17,7 +17,9 @@ class AutoCapitalizeHandlerTest : BasePlatformTestCase() {
         settings.setQuestionEnabled(true)
         settings.setEllipsisEnabled(true)
         settings.setAutoAddSpaceEnabled(true)
+        settings.setUndoSuppressionEnabled(true)
         settings.setToggleShortcut("ctrl shift X")
+        UndoCapitalizationTracker.getInstance().reset()
     }
 
     fun testAutoCapitalizeAfterPeriod() {
@@ -210,6 +212,20 @@ class AutoCapitalizeHandlerTest : BasePlatformTestCase() {
         myFixture.type(".")
         myFixture.type("hello")
         assertEquals("End. hello. Hello", myFixture.editor.document.text)
+    }
+
+    fun testDoesNotSuppressWhenSettingIsDisabled() {
+        UpcaserSettings.getInstance().setUndoSuppressionEnabled(false)
+
+        myFixture.editor.caretModel.moveToOffset(file.textLength)
+        val file = myFixture.configureByText(PlainTextFileType.INSTANCE, "End.")
+        myFixture.type(" hello")
+
+        undo()
+        myFixture.editor.caretModel.moveToOffset(myFixture.editor.document.textLength)
+        myFixture.type(" hello")
+
+        assertEquals("End. Hello", myFixture.editor.document.text)
     }
 
     private fun undo() {

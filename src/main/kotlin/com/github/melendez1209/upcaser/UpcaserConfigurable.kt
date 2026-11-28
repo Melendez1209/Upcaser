@@ -78,6 +78,17 @@ class UpcaserConfigurable : Configurable {
                 }
             }.enabledIf(enabledCheckBox.selected)
 
+            group(MyBundle.message("Settings.UndoSuppression")) {
+                row {
+                    checkBox(MyBundle.message("Settings.UndoSuppression.Enabled"))
+                        .bindSelected(
+                            settings::isUndoSuppressionEnabled,
+                            settings::setUndoSuppressionEnabled
+                        )
+                        .comment(MyBundle.message("Settings.UndoSuppression.Description"))
+                }
+            }.enabledIf(enabledCheckBox.selected)
+
             group(MyBundle.message("Settings.StatusBar")) {
                 row {
                     checkBox(MyBundle.message("Settings.ShowInStatusBar"))
@@ -132,7 +143,11 @@ class UpcaserConfigurable : Configurable {
     @Throws(ConfigurationException::class)
     override fun apply() {
         val showInStatusBarBefore = settings.isShowInStatusBarEnabled
+        val undoSuppressionBefore = settings.isUndoSuppressionEnabled
         panel?.apply()
+        if (settings.isUndoSuppressionEnabled != undoSuppressionBefore) {
+            UndoCapitalizationTracker.getInstance().reset()
+        }
         shortcutField?.getShortcut()?.let { newShortcut ->
             if (newShortcut != settings.toggleShortcut) {
                 settings.setToggleShortcut(newShortcut)

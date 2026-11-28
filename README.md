@@ -24,6 +24,7 @@ Features:
   context menu
 - Handles multiple spaces between punctuation and the next word
 - Capitalises the first letter at the beginning of the file
+- Optional undo handling: when an automatic capitalisation is undone, typing the same word again keeps it lowercase once
 - Status bar widget showing current activation status, with an option to hide it
 - Enhanced settings management with configurable shortcuts
 - The plugin name "Upcaser" is never translated, in any language

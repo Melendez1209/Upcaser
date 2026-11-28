@@ -23,6 +23,7 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
         var enabledForMarkdownHeader: Boolean = true,
         var enabledForMarkdownList: Boolean = true,
         var enabledInTextBoxes: Boolean = true,
+        var suppressAfterUndo: Boolean = true,
         var autoAddSpace: Boolean = true,
         var showInStatusBar: Boolean = true,
         var toggleShortcut: String = ShortcutManager.DEFAULT_TOGGLE_SHORTCUT,
@@ -52,6 +53,7 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
     val isMarkdownHeaderEnabled: Boolean get() = state.enabledForMarkdownHeader
     val isMarkdownListEnabled: Boolean get() = state.enabledForMarkdownList
     val isTextBoxesEnabled: Boolean get() = state.enabledInTextBoxes
+    val isUndoSuppressionEnabled: Boolean get() = state.suppressAfterUndo
     val isAutoAddSpaceEnabled: Boolean get() = state.autoAddSpace
     val isShowInStatusBarEnabled: Boolean get() = state.showInStatusBar
     val toggleShortcut: String get() = state.toggleShortcut
@@ -88,6 +90,10 @@ class UpcaserSettings : PersistentStateComponent<UpcaserSettings.State> {
 
     fun setTextBoxesEnabled(enabled: Boolean) {
         state.enabledInTextBoxes = enabled
+    }
+
+    fun setUndoSuppressionEnabled(enabled: Boolean) {
+        state.suppressAfterUndo = enabled
     }
 
     fun setAutoAddSpaceEnabled(enabled: Boolean) {
