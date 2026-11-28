@@ -1,6 +1,8 @@
 package com.github.melendez1209.upcaser
 
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.intellij.openapi.command.undo.UndoManager
+import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileTypes.PlainTextFileType
 
 class AutoCapitalizeHandlerTest : BasePlatformTestCase() {
@@ -15,7 +17,9 @@ class AutoCapitalizeHandlerTest : BasePlatformTestCase() {
         settings.setQuestionEnabled(true)
         settings.setEllipsisEnabled(true)
         settings.setAutoAddSpaceEnabled(true)
+        settings.setUndoSuppressionEnabled(true)
         settings.setToggleShortcut("ctrl shift X")
+        UndoCapitalizationTracker.getInstance().reset()
     }
 
     fun testAutoCapitalizeAfterPeriod() {
@@ -166,8 +170,67 @@ class AutoCapitalizeHandlerTest : BasePlatformTestCase() {
         myFixture.editor.caretModel.moveToOffset(file.textLength)
         myFixture.type(".hello")
 
-        // Should add space after ellipsis and capitalize the 'h'
+        // Should add space after ellipsis and capitalise the 'h'
         assertEquals("Wait... Hello", myFixture.editor.document.text)
+    }
+
+    fun testDoesNotCapitalizeWordRetypedAfterUndo() {
+        val file = myFixture.configureByText(PlainTextFileType.INSTANCE, "End.")
+        myFixture.editor.caretModel.moveToOffset(file.textLength)
+        myFixture.type(" hello")
+        assertEquals("End. Hello", myFixture.editor.document.text)
+
+        undo()
+        myFixture.editor.caretModel.moveToOffset(myFixture.editor.document.textLength)
+        myFixture.type(" hello")
+
+        assertEquals("End. hello", myFixture.editor.document.text)
+    }
+
+    fun testCapitalizesDifferentWordWithSameFirstLetterAfterUndo() {
+        val file = myFixture.configureByText(PlainTextFileType.INSTANCE, "End.")
+        myFixture.editor.caretModel.moveToOffset(file.textLength)
+        myFixture.type(" hello")
+
+        undo()
+        myFixture.editor.caretModel.moveToOffset(myFixture.editor.document.textLength)
+        myFixture.type(" help")
+
+        assertEquals("End. Help", myFixture.editor.document.text)
+    }
+
+    fun testResumesCapitalizationAfterSuppressedWord() {
+        val file = myFixture.configureByText(PlainTextFileType.INSTANCE, "End.")
+        myFixture.editor.caretModel.moveToOffset(file.textLength)
+        myFixture.type(" hello")
+
+        undo()
+        myFixture.editor.caretModel.moveToOffset(myFixture.editor.document.textLength)
+        myFixture.type(" hello")
+        assertEquals("End. hello", myFixture.editor.document.text)
+
+        myFixture.type(".")
+        myFixture.type("hello")
+        assertEquals("End. hello. Hello", myFixture.editor.document.text)
+    }
+
+    fun testDoesNotSuppressWhenSettingIsDisabled() {
+        UpcaserSettings.getInstance().setUndoSuppressionEnabled(false)
+
+        myFixture.editor.caretModel.moveToOffset(file.textLength)
+        val file = myFixture.configureByText(PlainTextFileType.INSTANCE, "End.")
+        myFixture.type(" hello")
+
+        undo()
+        myFixture.editor.caretModel.moveToOffset(myFixture.editor.document.textLength)
+        myFixture.type(" hello")
+
+        assertEquals("End. Hello", myFixture.editor.document.text)
+    }
+
+    private fun undo() {
+        val fileEditor = FileEditorManager.getInstance(project).getSelectedEditor(myFixture.file.virtualFile)
+        UndoManager.getInstance(project).undo(fileEditor)
     }
 
     fun testShortcutSettings() {

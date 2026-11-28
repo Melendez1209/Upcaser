@@ -26,6 +26,8 @@ class TextBoxCapitalizerTest : BasePlatformTestCase() {
         settings.setEllipsisEnabled(true)
         settings.setMarkdownHeaderEnabled(true)
         settings.setAutoAddSpaceEnabled(true)
+        settings.setUndoSuppressionEnabled(true)
+        UndoCapitalizationTracker.getInstance().reset()
     }
 
     fun testCapitalisesInsideSwingTextArea() {

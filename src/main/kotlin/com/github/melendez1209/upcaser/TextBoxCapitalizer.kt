@@ -123,7 +123,7 @@ class TextBoxCapitalizer : Disposable {
     private fun resolveTextBoxEditor(component: Component): Editor? {
         val field = findAncestor(component, EditorTextField::class.java)
         if (field != null) {
-            return field.getEditor()
+            return field.editor
         }
 
         val editor = findEditorInDataContext(component) ?: return null
@@ -148,7 +148,7 @@ class TextBoxCapitalizer : Disposable {
         return try {
             val context = DataManager.getInstance().getDataContext(component)
             CommonDataKeys.EDITOR.getData(context)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }
@@ -190,7 +190,8 @@ class TextBoxCapitalizer : Disposable {
         }
 
         val listener = createPlatformListener()
-        document.addDocumentListener(listener)
+        // The Disposable overload keeps the listener tied to this service's lifecycle.
+        document.addDocumentListener(listener, this)
         documentListeners[document] = listener
         LOG.info("Upcaser is now capitalising the text box ${editor.javaClass.simpleName}")
     }
@@ -260,7 +261,7 @@ class TextBoxCapitalizer : Disposable {
             val spaceOffset = WriteCommandAction.runWriteCommandAction(
                 editor?.project,
                 Computable {
-                    applyChanges(PlatformDocumentTarget(document), changes)
+                    applyChanges(PlatformDocumentTarget(document), changes, document)
                 }
             )
 
@@ -317,7 +318,7 @@ class TextBoxCapitalizer : Disposable {
         }
 
         try {
-            applyChanges(SwingDocumentTarget(document), changes)
+            applyChanges(SwingDocumentTarget(document), changes, null)
         } catch (e: Exception) {
             LOG.warn("Unable to capitalise the text area", e)
         }
@@ -326,10 +327,17 @@ class TextBoxCapitalizer : Disposable {
     /**
      * Applies the rules to the characters that have been typed, in the order they were typed.
      *
+     * @param document the platform document, or `null` for a plain Swing document. Only
+     *   platform documents take part in the undo based suppression.
      * @return the offset of the space that has been inserted, or `-1` when no space was added.
      */
-    private fun applyChanges(target: CapitalizationTarget, changes: List<PendingChange>): Int {
+    private fun applyChanges(
+        target: CapitalizationTarget,
+        changes: List<PendingChange>,
+        document: Document?
+    ): Int {
         val rules = UpcaserSettings.getInstance().toRules()
+        val tracker = UndoCapitalizationTracker.getInstance()
         var spaceOffset = -1
 
         for (index in changes.indices) {
@@ -342,7 +350,13 @@ class TextBoxCapitalizer : Disposable {
                 continue
             }
 
-            val outcome = CapitalizationApplier.applyInsertion(target, offset, change.character, rules)
+            val suppress = document != null && tracker.shouldSuppressCapitalization(document, offset)
+            val outcome = CapitalizationApplier.applyInsertion(
+                target, offset, change.character, rules, suppressCapitalization = suppress
+            )
+            if (document != null && outcome.capitalized) {
+                tracker.recordCapitalized(document, offset)
+            }
             if (outcome.spaceOffset < 0) {
                 continue
             }

@@ -46,7 +46,7 @@ messages, Markdown files and similar content in British English.
 ## Version Release
 
 - The version number lives in 3 places; a version change must keep them in sync: `pluginVersion` in `gradle.properties`,
-  `<version>` in `plugin.xml`, and `CHANGELOG.md` (entry + bottom link).
+  `<version>` in `plugin.xml.
 - `patchPluginXml` generates the marketplace description from the `<!-- Plugin description -->` section of `README.md`;
   keep that marker when editing the README.
 - Releases go through `publishPlugin` (depends on patchChangelog).
